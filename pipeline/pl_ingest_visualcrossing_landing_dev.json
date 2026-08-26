@@ -48,14 +48,29 @@
 							"date": {
 								"value": "@pipeline().parameters.date",
 								"type": "Expression"
-							}
+							},
+							"apiKey": "2Q86B9ZC8CVMUQ8746XTR7NZH"
 						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_json_visualcrossing_landing_dev",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"city": {
+								"value": "@pipeline().parameters.city",
+								"type": "Expression"
+							},
+							"date": {
+								"value": "@pipeline().parameters.date",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@concat('atmos_', pipeline().parameters.city, '_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.json')",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
