@@ -5,7 +5,14 @@
 			{
 				"name": "copy_visualcrossing_to_landing",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "set_date_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -97,16 +104,49 @@
 						"resource": "https://vault.azure.net"
 					}
 				}
+			},
+			{
+				"name": "set_date_list",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "web_get_apikey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "date_list",
+					"value": {
+						"value": "@range(0,add(div(sub(ticks(pipeline().parameters.endDate),ticks(pipeline().parameters.StartDate)),864000000000),1))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"city": {
+				"type": "string"
+			},
+			"StartDate": {
+				"type": "string"
+			},
+			"endDate": {
 				"type": "string"
 			}
 		},
 		"variables": {
 			"date": {
 				"type": "String"
+			},
+			"date_list": {
+				"type": "Array"
 			}
 		},
 		"folder": {
